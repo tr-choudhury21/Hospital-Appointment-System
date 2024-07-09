@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 
 export const dbConnection = ()=>{
-    mongoose.connect(process.env.MONGO_URI,{
+    mongoose.connect(process.env.MONGO_URL,{
         dbName: "HOSPITAL_MANAGEMENT_SYSTEM"
     })
     .then(()=>{
