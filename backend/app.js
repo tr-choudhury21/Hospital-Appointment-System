@@ -28,7 +28,7 @@ app.use(fileUpload({
     tempFileDir: "/tmp/",
 }));
 
-app.use("api/v1/message", messageRouter);
+app.use("/api/v1/message", messageRouter);
 
 dbConnection();
 
