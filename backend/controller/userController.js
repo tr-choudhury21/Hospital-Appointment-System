@@ -4,6 +4,8 @@ import { User } from "../models/userSchema.js";
 import { generateToken } from "../utils/jwtToken.js";
 
 
+//Patient Registration
+
 export const patientRegister = catchAsyncErrors(async(req, res, next) => {
     const {firstName, lastName, email, phone, password, gender, dob, nic, role} = req.body;
 
@@ -21,6 +23,11 @@ export const patientRegister = catchAsyncErrors(async(req, res, next) => {
 
     generateToken(user, "User Registered!", 200, res);
 });
+
+
+
+//All Login
+
 
 export const login = catchAsyncErrors(async(req, res, next) => {
     const { email, password, confirmPassword, role } = req.body;
@@ -61,6 +68,11 @@ export const login = catchAsyncErrors(async(req, res, next) => {
 });
 
 
+
+//Add Admin by an Admin
+
+
+
 export const addNewAdmin = catchAsyncErrors(async(req, res, next) => {
     const {firstName, lastName, email, phone, password, gender, dob, nic} = req.body;
 
@@ -85,6 +97,10 @@ export const addNewAdmin = catchAsyncErrors(async(req, res, next) => {
 
 
 
+//Get Current User Details
+
+
+
 export const getUserDetails = catchAsyncErrors(async(req, res, next) => {
     const user = req.user;
     res.status(200).json({
@@ -92,6 +108,11 @@ export const getUserDetails = catchAsyncErrors(async(req, res, next) => {
         user,
     });
 });
+
+
+
+//Add new Doctor by Admin
+
 
 
 
@@ -143,6 +164,13 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
     });
 });
 
+
+
+
+//Get the list of all doctors
+
+
+
 export const getAllDoctors = catchAsyncErrors(async(req, res, next) => {
     const doctors = await User.find({role: "Doctor"});
     res.status(200).json({
@@ -150,6 +178,12 @@ export const getAllDoctors = catchAsyncErrors(async(req, res, next) => {
         doctors,
     });
 });
+
+
+
+
+//Admin Logout
+
 
 export const logoutAdmin = catchAsyncErrors(async(req, res, next) =>{
     res.status(200).cookie("adminToken", "", {
@@ -160,6 +194,10 @@ export const logoutAdmin = catchAsyncErrors(async(req, res, next) =>{
         message: "Admin logged out!"
     });
 });
+
+
+
+//Patient Logout
 
 export const logoutPatient = catchAsyncErrors(async(req, res, next) =>{
     res.status(200).cookie("patientToken", "", {
