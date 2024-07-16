@@ -9,11 +9,13 @@ import AboutUs from './pages/AboutUs'
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Navbar from './components/Navbar'
 
 const App = () => {
   return (
     <>
       <Router>
+        <Navbar/>
         <Routes>
           <Route path='/' element={<Home/>}/>
           <Route path='/appointment' element={<Appointment/>}/>
