@@ -10,6 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './components/Navbar';
 import { Context } from './main';
+import Footer from './components/Footer';
 
 const App = () => {
 
@@ -45,6 +46,7 @@ const App = () => {
           <Route path='/login' element={<Login/>}/>
           <Route path='/about' element={<AboutUs/>}/>
         </Routes>
+        <Footer/>
         <ToastContainer position='top-center'/>
       </Router>
     </>
