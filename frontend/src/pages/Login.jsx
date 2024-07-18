@@ -9,7 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const navitgateTo = useNavigate();
+  const navigateTo = useNavigate();
 
   const handleLogin = async(e) => {
     e.preventDefault();
@@ -68,8 +68,7 @@ const Login = () => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          <div
-            style={{
+          <div style={{
               gap: "10px",
               justifyContent: "flex-end",
               flexDirection: "row",
