@@ -31,7 +31,9 @@ const Navbar = () => {
 
     return (
         <nav className='container'>
-            <div className="logo">HeavenCare</div>
+            <div className="logo">
+                <img src="/HC Logo.png" alt="logo" className='logo-img'/>
+            </div>
             <div className={show ? "navLinks showmenu" : "navLinks"}>
                 <div className="links">
                     <Link to={"/"} onClick={() => setShow(!show)}>Home</Link>
@@ -41,7 +43,7 @@ const Navbar = () => {
                 {isAuthenticated ? (
                     <button className='logoutBtn btn' onClick={handleLogout}>Logout</button>
                 ) : (
-                    <button className='logoutBtn btn' onClick={gotoLogin}>Login</button>
+                    <button className='loginBtn btn' onClick={gotoLogin}>Login</button>
                 )}
             </div>
             <div className='hamburger' onClick={() => setShow(!show)}>

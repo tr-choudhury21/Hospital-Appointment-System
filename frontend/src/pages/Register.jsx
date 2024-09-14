@@ -2,6 +2,7 @@ import React, {useContext, useState} from 'react'
 import { Context } from '../main'
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 
 const Register = () => {
@@ -11,10 +12,15 @@ const Register = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [nic, setNic] = useState("");
+  const [age, setAge] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const navigateTo = useNavigate();
 
@@ -24,7 +30,7 @@ const Register = () => {
       await axios
         .post(
           "http://localhost:5000/api/v1/user/patient/register",
-          { firstName, lastName, email, phone, nic, dob, gender, password },
+          { firstName, lastName, email, phone, age, dob, gender, password },
           {
             withCredentials: true,
             headers: { "Content-Type": "application/json" },
@@ -38,7 +44,7 @@ const Register = () => {
           setLastName("");
           setEmail("");
           setPhone("");
-          setNic("");
+          setAge("");
           setDob("");
           setGender("");
           setPassword("");
@@ -87,15 +93,17 @@ const Register = () => {
                 type="number"
                 placeholder="Mobile Number"
                 value={phone}
+                min='0'
                 onChange={(e) => setPhone(e.target.value)}
               />
             </div>
             <div>
               <input
                 type="number"
-                placeholder="NIC"
-                value={nic}
-                onChange={(e) => setNic(e.target.value)}
+                placeholder="Age"
+                value={age}
+                min='0'
+                onChange={(e) => setAge(e.target.value)}
               />
               <input
                 type={"date"}
@@ -110,12 +118,33 @@ const Register = () => {
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
-              <input
+              {/* <input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-              />
+              /> */}
+              <div style={{ position: 'relative' }}>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{ paddingRight: '2rem' }} // Add padding for the icon
+                />
+                <span 
+                  onClick={togglePasswordVisibility}
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </span>
+              </div>
             </div>
             <div
               style={{
@@ -126,7 +155,7 @@ const Register = () => {
             >
               <p style={{ marginBottom: 0 }}>Already Registered?</p>
               <Link
-                to={"/signin"}
+                to={"/login"}
                 style={{ textDecoration: "none", color: "#271776ca" }}
               >
                 Login Now
@@ -140,5 +169,6 @@ const Register = () => {
     </>
   )
 }
+
 
 export default Register

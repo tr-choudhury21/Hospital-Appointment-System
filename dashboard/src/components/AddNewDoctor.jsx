@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import axios from "axios";
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 
 const AddNewDoctor = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -11,10 +12,11 @@ const AddNewDoctor = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [nic, setNic] = useState("");
+  const [age, setAge] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [doctorDepartment, setDoctorDepartment] = useState("");
   const [docAvatar, setDocAvatar] = useState("");
   const [docAvatarPreview, setDocAvatarPreview] = useState("");
@@ -32,6 +34,10 @@ const AddNewDoctor = () => {
     "Dermatology",
     "ENT",
   ];
+
+    const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleAvatar = (e) => {
     const file = e.target.files[0];
@@ -52,7 +58,7 @@ const AddNewDoctor = () => {
       formData.append("email", email);
       formData.append("phone", phone);
       formData.append("password", password);
-      formData.append("nic", nic);
+      formData.append("age", age);
       formData.append("dob", dob);
       formData.append("gender", gender);
       formData.append("doctorDepartment", doctorDepartment);
@@ -86,7 +92,7 @@ const AddNewDoctor = () => {
   return (
     <section className="page">
       <section className="container add-doctor-form">
-        <img src="/logo.png" alt="logo" className="logo"/>
+        <img src="/HC Logo.png" alt="logo" className="logo"/>
         <h1 className="form-title">REGISTER A NEW DOCTOR</h1>
         <form onSubmit={handleAddNewDoctor}>
           <div className="first-wrapper">
@@ -122,13 +128,15 @@ const AddNewDoctor = () => {
                 type="number"
                 placeholder="Mobile Number"
                 value={phone}
+                min='0'
                 onChange={(e) => setPhone(e.target.value)}
               />
               <input
                 type="number"
-                placeholder="NIC"
-                value={nic}
-                onChange={(e) => setNic(e.target.value)}
+                placeholder="Age"
+                value={age}
+                min='0'
+                onChange={(e) => setAge(e.target.value)}
               />
               <input
                 type={"date"}
@@ -144,12 +152,33 @@ const AddNewDoctor = () => {
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>
-              <input
+              {/* <input
                 type="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-              />
+              /> */}
+              <div style={{ position: 'relative'}}>
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{ paddingRight: '2rem', width: "100%" }} // Add padding for the icon
+                />
+                <span 
+                  onClick={togglePasswordVisibility}
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    cursor: 'pointer'
+                  }}
+                >
+                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </span>
+              </div>
               <select
                 value={doctorDepartment}
                 onChange={(e) => {
