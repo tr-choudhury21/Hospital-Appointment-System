@@ -5,10 +5,10 @@ import { User } from "../models/userSchema.js";
 
 export const postAppointment = catchAsyncErrors(async(req, res, next) => {
     
-    const {firstName, lastName, email, phone, nic, dob, gender, appointment_date, department, doctor_firstName, doctor_lastName, hasVisited, address, } = req.body;
+    const {firstName, lastName, email, phone, age, dob, gender, appointment_date, department, doctor_firstName, doctor_lastName, hasVisited, address } = req.body;
 
     if (
-        !firstName || !lastName || !email || !phone || !nic || !dob || !gender || !appointment_date || !department || !doctor_firstName || !doctor_lastName || !address) {
+        !firstName || !lastName || !email || !phone || !age || !dob || !gender || !appointment_date || !department || !doctor_firstName || !doctor_lastName || !address) {
         return next(new ErrorHandler("Please Fill Full Form!", 400));
     }
 
@@ -31,7 +31,7 @@ export const postAppointment = catchAsyncErrors(async(req, res, next) => {
 
     const doctorId = isConflict[0]._id;
     const patientId = req.user._id;
-    const appointment = await Appointment.create({ firstName, lastName, email, phone, nic, dob, gender, appointment_date, department,
+    const appointment = await Appointment.create({ firstName, lastName, email, phone, age, dob, gender, appointment_date, department,
     doctor: {
         firstName: doctor_firstName,
         lastName: doctor_lastName,

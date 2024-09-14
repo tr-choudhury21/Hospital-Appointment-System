@@ -7,9 +7,9 @@ import { generateToken } from "../utils/jwtToken.js";
 //Patient Registration
 
 export const patientRegister = catchAsyncErrors(async(req, res, next) => {
-    const {firstName, lastName, email, phone, password, gender, dob, nic, role} = req.body;
+    const {firstName, lastName, email, phone, password, gender, dob, age} = req.body;
 
-    if( !firstName || !lastName || !email || !phone || !password || !gender || !dob || !nic || !role ){
+    if( !firstName || !lastName || !email || !phone || !password || !gender || !dob || !age){
         return next(new ErrorHandler("Please fill the entire form!", 400));
     }
 
@@ -19,7 +19,7 @@ export const patientRegister = catchAsyncErrors(async(req, res, next) => {
         return next(new ErrorHandler("User already Registered!", 400));
     }
 
-    user = await User.create({firstName, lastName, email, phone, password, gender, dob, nic, role});
+    user = await User.create({firstName, lastName, email, phone, password, gender, dob, age, role: "Patient",});
 
     generateToken(user, "User Registered!", 200, res);
 });
@@ -74,9 +74,9 @@ export const login = catchAsyncErrors(async(req, res, next) => {
 
 
 export const addNewAdmin = catchAsyncErrors(async(req, res, next) => {
-    const {firstName, lastName, email, phone, password, gender, dob, nic} = req.body;
+    const {firstName, lastName, email, phone, password, gender, dob, age} = req.body;
 
-    if( !firstName || !lastName || !email || !phone || !password || !gender || !dob || !nic){
+    if( !firstName || !lastName || !email || !phone || !password || !gender || !dob || !age){
         return next(new ErrorHandler("Please provide all necessary details!", 400));
     }
 
@@ -86,7 +86,7 @@ export const addNewAdmin = catchAsyncErrors(async(req, res, next) => {
     }
 
     const admin = await User.create({
-        firstName, lastName, email, phone, password, gender, dob, nic, role: "Admin",
+        firstName, lastName, email, phone, password, gender, dob, age, role: "Admin",
     });
 
     res.status(200).json({
@@ -128,9 +128,9 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
         return next(new ErrorHandler("File format not supported!", 400));
     }
 
-    const {firstName, lastName, email, phone, password, gender, dob, nic, doctorDepartment} = req.body;
+    const {firstName, lastName, email, phone, password, gender, dob, age, doctorDepartment} = req.body;
 
-    if(!firstName || !lastName || !email || !phone || !password || !gender || !dob || !nic || !doctorDepartment){
+    if(!firstName || !lastName || !email || !phone || !password || !gender || !dob || !age || !doctorDepartment){
         return next(new ErrorHandler("Please provide full details!", 400));
     }
 
@@ -151,7 +151,7 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
             );
         }
 
-    const doctor = await User.create({firstName, lastName, email, phone, password, gender, dob, nic, role: "Doctor", 
+    const doctor = await User.create({firstName, lastName, email, phone, password, gender, dob, age, role: "Doctor", 
         docAvatar: {
         public_id: cloudinaryResponse.public_id,
         url: cloudinaryResponse.secure_url, 
