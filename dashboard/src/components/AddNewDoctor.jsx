@@ -8,6 +8,7 @@ import { FaEye, FaEyeSlash } from 'react-icons/fa'
 const AddNewDoctor = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
 
+  const [loading, setLoading] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -51,6 +52,7 @@ const AddNewDoctor = () => {
 
   const handleAddNewDoctor = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const formData = new FormData();
       formData.append("firstName", firstName);
@@ -64,7 +66,7 @@ const AddNewDoctor = () => {
       formData.append("doctorDepartment", doctorDepartment);
       formData.append("docAvatar", docAvatar);
       await axios
-        .post("http://localhost:5000/api/v1/user/doctor/addnew", formData, {
+        .post("http://localhost:5000/api/v1/user/doctors/new", formData, {
           withCredentials: true,
           headers: { "Content-Type": "multipart/form-data" },
         })
@@ -76,13 +78,16 @@ const AddNewDoctor = () => {
           setLastName("");
           setEmail("");
           setPhone("");
-          setNic("");
+          setAge("");
           setDob("");
           setGender("");
           setPassword("");
         });
     } catch (error) {
       toast.error(error.response.data.message);
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -194,7 +199,7 @@ const AddNewDoctor = () => {
                   );
                 })}
               </select>
-              <button type="submit">Register New Doctor</button>
+              <button type="submit" disabled={loading}>Register New Doctor</button>
             </div>
           </div>
         </form>
