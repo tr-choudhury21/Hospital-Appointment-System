@@ -8,6 +8,8 @@ import { AiFillCloseCircle } from "react-icons/ai";
 
 const Dashboard = () => {
   const [appointments, setAppointments] = useState([]);
+  const [totalAppointments, setTotalAppointments] = useState(0);
+  const [registeredDoctors, setRegisteredDoctors] = useState(0);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -24,10 +26,44 @@ const Dashboard = () => {
     fetchAppointments();
   }, []);
 
+
+  useEffect(() => {
+    const fetchAppointmentsCount = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:5000/api/v1/appointment/getall",
+          { withCredentials: true }
+        );
+        setTotalAppointments(data.appointmentsCount);
+      } catch (error) {
+        setTotalAppointments(0);
+      }
+    };
+    fetchAppointmentsCount();
+  }, []);
+
+
+
+  useEffect(() => {
+    const fetchDoctors = async () => {
+      try {
+        const { data } = await axios.get(
+          "http://localhost:5000/api/v1/user/doctors",
+          { withCredentials: true }
+        );
+        setRegisteredDoctors(data.doctorCount);
+      } catch (error) {
+        setRegisteredDoctors(0);
+      }
+    };
+    fetchDoctors();
+  }, []);
+
+
   const handleUpdateStatus = async (appointmentId, status) => {
     try {
       const { data } = await axios.put(
-        `http://localhost:4000/api/v1/appointment/update/${appointmentId}`,
+        `http://localhost:5000/api/v1/appointment/update/${appointmentId}`,
         { status },
         { withCredentials: true }
       );
@@ -72,11 +108,11 @@ const Dashboard = () => {
           </div>
           <div className="secondBox">
             <p>Total Appointments</p>
-            <h3>1500</h3>
+            <h3>{totalAppointments}</h3>
           </div>
           <div className="thirdBox">
             <p>Registered Doctors</p>
-            <h3>10</h3>
+            <h3>{registeredDoctors}</h3>
           </div>
         </div>
         <div className="banner">
