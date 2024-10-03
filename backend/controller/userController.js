@@ -2,6 +2,7 @@ import { catchAsyncErrors } from "../middlewares/catchAsyncErrors.js";
 import ErrorHandler from "../middlewares/errorMiddleware.js";
 import { User } from "../models/userSchema.js";
 import { generateToken } from "../utils/jwtToken.js";
+import cloudinary from "cloudinary"
 
 
 //Patient Registration
@@ -122,7 +123,7 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
     }
 
     const {docAvatar} = req.files;
-    const allowedFormats = ["/image/png", "/image/jpeg", "/image/webp"];
+    const allowedFormats = ["image/png","image/jpg", "image/jpeg", "image/webp"];
 
     if(!allowedFormats.includes(docAvatar.mimetype)){
         return next(new ErrorHandler("File format not supported!", 400));
@@ -136,7 +137,7 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
 
     const isRegistered = await User.findOne({email});
 
-    if(!isRegistered){
+    if(isRegistered){
         return next(new ErrorHandler(`${isRegistered.role} already registered with this email`, 400));
     }
 
@@ -151,7 +152,7 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
             );
         }
 
-    const doctor = await User.create({firstName, lastName, email, phone, password, gender, dob, age, role: "Doctor", 
+    const doctor = await User.create({firstName, lastName, email, phone, password, gender, dob, age, role: "Doctor", doctorDepartment, 
         docAvatar: {
         public_id: cloudinaryResponse.public_id,
         url: cloudinaryResponse.secure_url, 
@@ -173,12 +174,13 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
 
 export const getAllDoctors = catchAsyncErrors(async(req, res, next) => {
     const doctors = await User.find({role: "Doctor"});
+    const doctorCount = await User.countDocuments({role: "Doctor"});
     res.status(200).json({
         success: true,
         doctors,
+        doctorCount
     });
 });
-
 
 
 
