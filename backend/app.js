@@ -36,5 +36,8 @@ app.use("/api/v1/appointment", appointmentRouter);
 
 dbConnection();
 
+// console.log("email: ", process.env.EMAIL_USERNAME);
+// console.log("password: ", process.env.EMAIL_PASSWORD);
+
 app.use(errorMiddleware);
 export default app;
