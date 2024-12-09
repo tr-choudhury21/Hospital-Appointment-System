@@ -8,9 +8,9 @@ import cloudinary from "cloudinary"
 //Patient Registration
 
 export const patientRegister = catchAsyncErrors(async(req, res, next) => {
-    const {firstName, lastName, email, phone, password, gender, dob, age} = req.body;
+    const {firstName, lastName, email, phone, password, gender, dob} = req.body;
 
-    if( !firstName || !lastName || !email || !phone || !password || !gender || !dob || !age){
+    if( !firstName || !lastName || !email || !phone || !password || !gender || !dob){
         return next(new ErrorHandler("Please fill the entire form!", 400));
     }
 
@@ -20,7 +20,7 @@ export const patientRegister = catchAsyncErrors(async(req, res, next) => {
         return next(new ErrorHandler("User already Registered!", 400));
     }
 
-    user = await User.create({firstName, lastName, email, phone, password, gender, dob, age, role: "Patient",});
+    user = await User.create({firstName, lastName, email, phone, password, gender, dob, role: "Patient",});
 
     generateToken(user, "User Registered!", 200, res);
 });
@@ -31,16 +31,11 @@ export const patientRegister = catchAsyncErrors(async(req, res, next) => {
 
 
 export const login = catchAsyncErrors(async(req, res, next) => {
-    const { email, password, confirmPassword, role } = req.body;
+    const { email, password, role } = req.body;
 
     // Check if all required fields are provided
-    if( !email || !password || !confirmPassword || !role ){
+    if( !email || !password || !role ){
         return next(new ErrorHandler("Please provide all necessary details!", 400));
-    }
-
-    // Check if password and confirmPassword match
-    if( password !== confirmPassword ){
-        return next(new ErrorHandler("Confirm Password do not match !", 400));
     }
 
 
@@ -75,9 +70,9 @@ export const login = catchAsyncErrors(async(req, res, next) => {
 
 
 export const addNewAdmin = catchAsyncErrors(async(req, res, next) => {
-    const {firstName, lastName, email, phone, password, gender, dob, age} = req.body;
+    const {firstName, lastName, email, phone, password, gender, dob} = req.body;
 
-    if( !firstName || !lastName || !email || !phone || !password || !gender || !dob || !age){
+    if( !firstName || !lastName || !email || !phone || !password || !gender || !dob){
         return next(new ErrorHandler("Please provide all necessary details!", 400));
     }
 
@@ -129,9 +124,9 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
         return next(new ErrorHandler("File format not supported!", 400));
     }
 
-    const {firstName, lastName, email, phone, password, gender, dob, age, doctorDepartment} = req.body;
+    const {firstName, lastName, email, phone, password, gender, dob, doctorDepartment} = req.body;
 
-    if(!firstName || !lastName || !email || !phone || !password || !gender || !dob || !age || !doctorDepartment){
+    if(!firstName || !lastName || !email || !phone || !password || !gender || !dob || !doctorDepartment){
         return next(new ErrorHandler("Please provide full details!", 400));
     }
 
@@ -152,7 +147,7 @@ export const addNewDoctor = catchAsyncErrors(async(req, res, next) => {
             );
         }
 
-    const doctor = await User.create({firstName, lastName, email, phone, password, gender, dob, age, role: "Doctor", doctorDepartment, 
+    const doctor = await User.create({firstName, lastName, email, phone, password, gender, dob, role: "Doctor", doctorDepartment, 
         docAvatar: {
         public_id: cloudinaryResponse.public_id,
         url: cloudinaryResponse.secure_url, 
